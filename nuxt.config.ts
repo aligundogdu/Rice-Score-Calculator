@@ -7,7 +7,20 @@ export default defineNuxtConfig({
 			autoprefixer: {}
 		}
 	},
-	devtools: { enabled: true }
+	devtools: { enabled: true },
+	app: {
+		// Uygulama altdizinde yayınlanacağı için baseURL ayarı
+		baseURL: '/projects/rice-calculator/'
+	},
+	// Statik üretim için tüm rotaları önceden oluştur
+	routeRules: {
+		'/**': { prerender: true }
+	},
+	nitro: {
+		prerender: {
+			routes: ['/']
+		}
+	}
 })
 
 

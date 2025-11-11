@@ -13,38 +13,44 @@
 		<section class="card bg-base-200 shadow">
 			<div class="card-body">
 				<h2 class="card-title">Add New Feature</h2>
-				<form class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end" @submit.prevent="addFeature">
-					<div class="md:col-span-2">
-						<label class="label"><span class="label-text">Feature Name</span></label>
-						<input v-model.trim="form.name" type="text" class="input input-bordered w-full" placeholder="e.g. Improve onboarding" required />
+				<form class="space-y-4" @submit.prevent="addFeature">
+					<!-- Row 1: name + description -->
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div>
+							<label class="label"><span class="label-text">Feature Name</span></label>
+							<input v-model.trim="form.name" type="text" class="input input-bordered w-full" placeholder="e.g. Improve onboarding" required />
+						</div>
+						<div>
+							<label class="label"><span class="label-text">Description</span></label>
+							<input v-model.trim="form.description" type="text" class="input input-bordered w-full" placeholder="Short description" />
+						</div>
 					</div>
-					<div class="md:col-span-2">
-						<label class="label"><span class="label-text">Description</span></label>
-						<input v-model.trim="form.description" type="text" class="input input-bordered w-full" placeholder="Short description" />
-					</div>
-					<div>
-						<label class="label"><span class="label-text">Reach</span></label>
-						<input v-model.number="form.reach" type="number" min="0" step="1" class="input input-bordered w-full" placeholder="e.g. 1000" />
-						<p v-if="errors.reach" class="text-error text-sm mt-1">{{ errors.reach }}</p>
-					</div>
-					<div>
-						<label class="label"><span class="label-text">Impact (0.25–3)</span></label>
-						<input v-model.number="form.impact" type="number" min="0" step="0.01" class="input input-bordered w-full" placeholder="e.g. 1.5" />
-						<p v-if="errors.impact" class="text-error text-sm mt-1">{{ errors.impact }}</p>
-					</div>
-					<div>
-						<label class="label"><span class="label-text">Confidence (%)</span></label>
-						<input v-model.number="form.confidencePct" type="number" min="0" max="100" step="1" class="input input-bordered w-full" placeholder="e.g. 80" />
-						<p v-if="errors.confidencePct" class="text-error text-sm mt-1">{{ errors.confidencePct }}</p>
-					</div>
-					<div>
-						<label class="label"><span class="label-text">Effort</span></label>
-						<input v-model.number="form.effort" type="number" min="0" step="0.1" class="input input-bordered w-full" placeholder="e.g. 5" />
-						<p v-if="errors.effort" class="text-error text-sm mt-1">{{ errors.effort }}</p>
-					</div>
-					<div class="md:col-span-6 flex gap-2">
-						<button type="submit" class="btn btn-primary">Add</button>
-						<button type="button" class="btn btn-ghost" @click="resetForm">Reset</button>
+					<!-- Row 2: metrics -->
+					<div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+						<div>
+							<label class="label"><span class="label-text">Reach</span></label>
+							<input v-model.number="form.reach" type="number" min="0" step="1" class="input input-bordered w-full" placeholder="e.g. 1000" />
+							<p v-if="errors.reach" class="text-error text-sm mt-1">{{ errors.reach }}</p>
+						</div>
+						<div>
+							<label class="label"><span class="label-text">Impact (0.25–3)</span></label>
+							<input v-model.number="form.impact" type="number" min="0.25" max="3" step="0.01" class="input input-bordered w-full" placeholder="e.g. 1.5" />
+							<p v-if="errors.impact" class="text-error text-sm mt-1">{{ errors.impact }}</p>
+						</div>
+						<div>
+							<label class="label"><span class="label-text">Confidence (%)</span></label>
+							<input v-model.number="form.confidencePct" type="number" min="0" max="100" step="1" class="input input-bordered w-full" placeholder="e.g. 80" />
+							<p v-if="errors.confidencePct" class="text-error text-sm mt-1">{{ errors.confidencePct }}</p>
+						</div>
+						<div>
+							<label class="label"><span class="label-text">Effort</span></label>
+							<input v-model.number="form.effort" type="number" min="0.1" step="0.1" class="input input-bordered w-full" placeholder="e.g. 5" />
+							<p v-if="errors.effort" class="text-error text-sm mt-1">{{ errors.effort }}</p>
+						</div>
+						<div class="flex gap-2">
+							<button type="submit" class="btn btn-primary">Add</button>
+							<button type="button" class="btn btn-ghost" @click="resetForm">Reset</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -155,7 +161,14 @@ const errors = reactive<Record<string, string | null>>({
 
 function validate(): boolean {
 	errors.reach = form.reach < 0 ? 'Reach cannot be negative' : null
-	errors.impact = form.impact < 0 ? 'Impact cannot be negative' : null
+	// Impact typical range: 0.25–3
+	if (form.impact < 0.25) {
+		errors.impact = 'Impact must be at least 0.25'
+	} else if (form.impact > 3) {
+		errors.impact = 'Impact must be at most 3'
+	} else {
+		errors.impact = null
+	}
 	errors.confidencePct =
 		form.confidencePct < 0 || form.confidencePct > 100 ? 'Confidence must be between 0 and 100' : null
 	errors.effort = form.effort <= 0 ? 'Effort must be greater than 0' : null
