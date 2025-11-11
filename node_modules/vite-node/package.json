@@ -1,0 +1,77 @@
+{
+  "name": "vite-node",
+  "type": "module",
+  "version": "5.0.0",
+  "description": "Vite as Node.js runtime",
+  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "license": "MIT",
+  "funding": "https://opencollective.com/antfu",
+  "homepage": "https://github.com/antfu-collective/vite-node#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antfu-collective/vite-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antfu-collective/vite-node/issues"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./dist/index.js",
+    "./client": "./dist/client.js",
+    "./server": "./dist/server.js",
+    "./utils": "./dist/utils.js",
+    "./hmr": "./dist/hmr.js",
+    "./source-map": "./dist/source-map.js",
+    "./constants": "./dist/constants.js",
+    "./*": "./*"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "vite-node": "./vite-node.js"
+  },
+  "files": [
+    "dist",
+    "vite-node.js"
+  ],
+  "engines": {
+    "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "debug": "^4.4.3",
+    "es-module-lexer": "^1.7.0",
+    "pathe": "^2.0.3",
+    "vite": "^7.2.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
+    "@jridgewell/trace-mapping": "^0.3.31",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^24.10.0",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.39.1",
+    "inquirer": "^12.10.0",
+    "rimraf": "^6.1.0",
+    "rollup": "^4.52.5",
+    "rollup-plugin-dts": "^6.2.3",
+    "tinyexec": "^1.0.2",
+    "tinyrainbow": "^3.0.3",
+    "typescript": "^5.9.3",
+    "unplugin-isolated-decl": "^0.15.3",
+    "unplugin-oxc": "^0.5.3",
+    "vitest": "^4.0.7"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c --watch --watch.include 'src/**' -m inline",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "release": "bumpp"
+  }
+}

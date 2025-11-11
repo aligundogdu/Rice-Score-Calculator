@@ -1,0 +1,10 @@
+export { c as createHmrEmitter, a as createHotContext, g as getCache, h as handleMessage, r as reload, s as sendMessageBuffer, v as viteNodeHmrPlugin } from './chunk-hmr.js';
+import 'node:events';
+import 'node:process';
+import 'debug';
+import './chunk-index.js';
+import './utils.js';
+import 'node:fs';
+import 'node:module';
+import 'node:url';
+import 'pathe';
